@@ -1,0 +1,96 @@
+.footer {
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-light);
+  margin-top: auto;
+  padding: 3rem 1.5rem 2rem;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.brand {
+  max-width: 320px;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+}
+
+.description {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.links {
+  display: flex;
+  gap: 3rem;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.groupTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.link {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--primary);
+}
+
+.linkDisabled {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  cursor: default;
+}
+
+.bottom {
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+.copyright {
+  font-size: 0.8125rem;
+  color: var(--text-light);
+}
+
+@media (max-width: 640px) {
+  .top {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .links {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
