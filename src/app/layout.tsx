@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { SITE_CONFIG } from '@/constants/navigation';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 export const metadata: Metadata = {
   title: {
@@ -20,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Header />
-          <main style={{ flex: 1 }}>{children}</main>
-          <Footer />
-        </div>
+        <AuthProvider>
+          <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <Header />
+            <main style={{ flex: 1 }}>{children}</main>
+            <Footer />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,105 +1,227 @@
+
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { CATEGORIES, MOCK_POSTS, CategoryInfo } from '@/mocks/posts';
+import {
+  CATEGORIES,
+  CategoryInfo,
+  PostWithComments,
+} from '@/mocks/posts';
 import PostCard from '@/components/community/PostCard';
 import styles from './community.module.css';
 
+const BOARD_CATEGORIES: CategoryInfo[] = [
+  ...CATEGORIES.filter((category) => category.id !== 'MARKET'),
+  {
+    id: 'MARKET',
+    name: '장터',
+    description: '필요한 물건을 사고팔아요',
+    icon: '🛍️',
+  },
+];
+
 export default function CommunityPage() {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryInfo['id']>('ALL');
+  const [selectedCategory, setSelectedCategory] = useState<
+    PostWithComments['category'] | 'ALL'
+  >('ALL');
+
   const [searchQuery, setSearchQuery] = useState('');
+  const [posts, setPosts] = useState<PostWithComments[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        setIsLoading(true);
+        setError('');
+
+        const response = await fetch('/api/posts', {
+          cache: 'no-store',
+        });
+
+        if (!response.ok) {
+          throw new Error('게시글을 불러오지 못했습니다.');
+        }
+
+        const result = await response.json();
+
+        const formattedPosts: PostWithComments[] = result.posts.map(
+          (post: {
+            id: string;
+            authorId: string;
+            category: string;
+            title: string;
+            content: string;
+            isAnonymous: boolean;
+            anonymousNickname: string | null;
+            viewCount: number;
+            likeCount: number;
+            commentCount: number;
+            createdAt: string;
+            updatedAt: string;
+          }) => ({
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            category: post.category as PostWithComments['category'],
+            authorId: post.authorId,
+            isAnonymous: post.isAnonymous,
+            anonymousNickname: post.anonymousNickname || '익명',
+            viewCount: post.viewCount,
+            likeCount: post.likeCount,
+            commentCount: post.commentCount,
+            isHot: false,
+            createdAt: new Date(post.createdAt),
+            updatedAt: new Date(post.updatedAt),
+            comments: [],
+          })
+        );
+
+        setPosts(formattedPosts);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : '게시글을 불러오는 중 오류가 발생했습니다.'
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchPosts();
+  }, []);
 
   const filteredPosts = useMemo(() => {
-    return MOCK_POSTS.filter((post) => {
-      const matchCategory =
-        selectedCategory === 'ALL' || post.category === selectedCategory;
-      const matchSearch =
-        searchQuery.trim() === '' ||
-        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.content.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchCategory && matchSearch;
+    const keyword = searchQuery.trim().toLowerCase();
+
+    return posts.filter((post) => {
+      const matchesCategory =
+        selectedCategory === 'ALL' ||
+        post.category === selectedCategory;
+
+      const matchesSearch =
+        post.title.toLowerCase().includes(keyword) ||
+        post.content.toLowerCase().includes(keyword);
+
+      return matchesCategory && matchesSearch;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [posts, selectedCategory, searchQuery]);
+
+  const selectedCategoryInfo = BOARD_CATEGORIES.find(
+    (category) => category.id === selectedCategory
+  );
 
   return (
     <div className={styles.container}>
-      {/* Community Header Banner */}
       <section className={styles.heroBanner}>
-        <div className={styles.heroText}>
-          <span className={styles.heroBadge}>UNIBOARD 익명 광장</span>
-          <h1 className={styles.heroTitle}>대학생 익명 커뮤니티</h1>
+        <div>
+          <span className={styles.heroBadge}>UNIBOARD COMMUNITY</span>
+
+          <h1 className={styles.heroTitle}>커뮤니티</h1>
+
           <p className={styles.heroSubtitle}>
-            동기, 선후배들과 함께 나누는 솔직담백한 대학 생활 이야기
+            자유롭게 소통하고 다양한 대학 생활 정보를 나눠보세요.
           </p>
         </div>
+
         <Link href="/community/write" className={styles.writeButton}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 20h9"/>
-            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-          </svg>
-          <span>익명 글쓰기</span>
+          <span>＋</span>
+          글쓰기
         </Link>
       </section>
 
-      {/* Category Tabs */}
-      <nav className={styles.categoryNav}>
-        {CATEGORIES.map((cat) => (
+      <nav className={styles.categoryNav} aria-label="게시판 카테고리">
+        {BOARD_CATEGORIES.map((category: CategoryInfo) => (
           <button
-            key={cat.id}
-            className={`${styles.tabBtn} ${selectedCategory === cat.id ? styles.activeTab : ''}`}
-            onClick={() => setSelectedCategory(cat.id)}
+            key={category.id}
+            type="button"
+            aria-pressed={selectedCategory === category.id}
+            className={`${styles.tabBtn} ${
+              selectedCategory === category.id ? styles.activeTab : ''
+            }`}
+            onClick={() => setSelectedCategory(category.id)}
           >
-            <span className={styles.tabIcon}>{cat.icon}</span>
-            <span className={styles.tabName}>{cat.name}</span>
+            <span>{category.icon}</span>
+            <span>{category.name}</span>
           </button>
         ))}
       </nav>
 
-      {/* Search & Sort Controls */}
-      <div className={styles.controlsBar}>
+      <section className={styles.controlsBar}>
         <div className={styles.searchBox}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.searchIcon}>
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.35-4.35"/>
-          </svg>
+          <span className={styles.searchIcon}>⌕</span>
+
           <input
             type="text"
-            placeholder="게시글 제목이나 내용 검색..."
+            placeholder="궁금한 게시글을 검색해 보세요."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(event) => setSearchQuery(event.target.value)}
             className={styles.searchInput}
           />
+
           {searchQuery && (
             <button
-              onClick={() => setSearchQuery('')}
+              type="button"
               className={styles.clearSearchBtn}
+              onClick={() => setSearchQuery('')}
               aria-label="검색어 지우기"
             >
               ✕
             </button>
           )}
         </div>
-        <div className={styles.postCount}>
-          총 <strong>{filteredPosts.length}</strong>개의 이야기
-        </div>
-      </div>
 
-      {/* Posts List */}
-      <div className={styles.postList}>
-        {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => <PostCard key={post.id} post={post} />)
-        ) : (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>🔍</div>
-            <h3 className={styles.emptyTitle}>해당하는 게시글이 없습니다.</h3>
-            <p className={styles.emptyDesc}>다른 검색어를 입력하거나 새로운 첫 게시글을 작성해보세요!</p>
+        <p className={styles.postCount}>
+          총 <strong>{filteredPosts.length}</strong>개의 게시글
+        </p>
+      </section>
+
+      {selectedCategoryInfo && selectedCategory !== 'ALL' && (
+        <p className={styles.categoryDescription}>
+          {selectedCategoryInfo.description}
+        </p>
+      )}
+
+      {isLoading ? (
+        <div className={styles.emptyState}>
+          <p className={styles.emptyTitle}>게시글을 불러오는 중...</p>
+        </div>
+      ) : error ? (
+        <div className={styles.emptyState}>
+          <p className={styles.emptyTitle}>{error}</p>
+        </div>
+      ) : filteredPosts.length > 0 ? (
+        <div className={styles.postList}>
+          {filteredPosts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.emptyState}>
+          <span className={styles.emptyIcon}>📝</span>
+
+          <h2 className={styles.emptyTitle}>
+            {searchQuery
+              ? '검색 결과가 없습니다.'
+              : '아직 게시글이 없습니다.'}
+          </h2>
+
+          <p className={styles.emptyDesc}>
+            {searchQuery
+              ? '다른 검색어로 다시 검색해 보세요.'
+              : '이 카테고리의 첫 번째 게시글을 작성해 보세요.'}
+          </p>
+
+          {!searchQuery && (
             <Link href="/community/write" className={styles.emptyCta}>
-              새 글 작성하기
+              글 작성하기
             </Link>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

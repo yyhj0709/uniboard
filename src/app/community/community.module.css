@@ -1,17 +1,18 @@
+
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 2.5rem 1.5rem 5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.75rem;
 }
 
 /* Hero Banner */
 .heroBanner {
   background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   color: var(--text-inverse);
-  padding: 2.25rem 2.5rem;
+  padding: 2.5rem;
   border-radius: var(--radius-lg);
   display: flex;
   justify-content: space-between;
@@ -24,28 +25,30 @@
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: #60a5fa;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.65rem;
 }
 
 .heroTitle {
-  font-size: 1.85rem;
+  font-size: 2rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.35rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
 }
 
 .heroSubtitle {
   font-size: 0.95rem;
-  color: #94a3b8;
+  color: #cbd5e1;
+  line-height: 1.6;
 }
 
 .writeButton {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.85rem 1.5rem;
+  padding: 0.9rem 1.5rem;
   background-color: var(--primary);
   color: var(--text-inverse);
   font-weight: 700;
@@ -59,47 +62,56 @@
 .writeButton:hover {
   background-color: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
 }
 
-/* Category Tabs */
+/* Category Navigation */
 .categoryNav {
   display: flex;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.65rem;
   overflow-x: auto;
-  padding-bottom: 0.5rem;
+  padding: 0.25rem 0 0.75rem;
+  scrollbar-width: thin;
 }
 
 .categoryNav::-webkit-scrollbar {
   height: 4px;
 }
 
+.categoryNav::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 10px;
+}
+
 .tabBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.65rem 1.15rem;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.25rem;
   border-radius: var(--radius-full);
   background-color: var(--bg-surface);
   border: 1px solid var(--border-light);
   color: var(--text-muted);
   font-size: 0.925rem;
-  font-weight: 600;
+  font-weight: 650;
   white-space: nowrap;
-  transition: all 0.15s ease;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .tabBtn:hover {
   background-color: var(--bg-subtle);
   color: var(--text-main);
-  border-color: var(--border-hover);
+  border-color: var(--primary);
+  transform: translateY(-1px);
 }
 
 .activeTab {
   background-color: var(--primary);
   color: var(--text-inverse);
   border-color: var(--primary);
-  box-shadow: 0 2px 8px var(--primary-glow);
+  box-shadow: 0 3px 10px var(--primary-glow);
 }
 
 .activeTab:hover {
@@ -114,6 +126,8 @@
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .searchBox {
@@ -128,12 +142,13 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-light);
+  font-size: 1.25rem;
   pointer-events: none;
 }
 
 .searchInput {
   width: 100%;
-  padding: 0.75rem 2.25rem 0.75rem 2.5rem;
+  padding: 0.8rem 2.5rem 0.8rem 2.6rem;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
@@ -142,6 +157,10 @@
   color: var(--text-main);
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--text-light);
 }
 
 .searchInput:focus {
@@ -156,16 +175,30 @@
   transform: translateY(-50%);
   color: var(--text-light);
   font-size: 0.85rem;
-  padding: 0.2rem;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.clearSearchBtn:hover {
+  color: var(--text-main);
 }
 
 .postCount {
   font-size: 0.875rem;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .postCount strong {
-  color: var(--text-main);
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.categoryDescription {
+  margin-top: -0.75rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 /* Post List */
@@ -206,32 +239,53 @@
 }
 
 .emptyCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.75rem 1.5rem;
   background-color: var(--primary);
   color: var(--text-inverse);
   font-weight: 600;
   border-radius: var(--radius-md);
+  transition: background-color 0.2s ease;
+}
+
+.emptyCta:hover {
+  background-color: var(--primary-hover);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1rem 3rem;
+    gap: 1.5rem;
+  }
+
   .heroBanner {
     flex-direction: column;
     align-items: flex-start;
     padding: 1.75rem;
   }
 
+  .heroTitle {
+    font-size: 1.65rem;
+  }
+
   .writeButton {
     width: 100%;
-    justify-content: center;
   }
 
   .searchBox {
     max-width: 100%;
+    width: 100%;
   }
 
   .controlsBar {
     flex-direction: column-reverse;
     align-items: flex-start;
+  }
+
+  .postCount {
+    align-self: flex-end;
   }
 }

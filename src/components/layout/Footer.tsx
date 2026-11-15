@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { SITE_CONFIG } from '@/constants/navigation';
 import styles from './Footer.module.css';
@@ -14,8 +15,9 @@ export default function Footer() {
           <div className={styles.links}>
             <div className={styles.linkGroup}>
               <span className={styles.groupTitle}>서비스</span>
-              <Link href="/community" className={styles.link}>커뮤니티</Link>
-              <Link href="/chat" className={styles.link}>AI 대화방</Link>
+              <Link href="/community" className={styles.link}>
+                커뮤니티
+              </Link>
             </div>
             <div className={styles.linkGroup}>
               <span className={styles.groupTitle}>안내</span>

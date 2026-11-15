@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import styles from './page.module.css';
 
@@ -10,23 +11,21 @@ export default function HomePage() {
           <span className={styles.badgeDot}></span>
           <span>대학생 익명 커뮤니티 플랫폼</span>
         </div>
-        
+
         <h1 className={styles.heroTitle}>
           캠퍼스 라이프를 연결하는 <br className={styles.breakDesktop} />
           <span className={styles.highlight}>가장 솔직한 이야기, UNIBOARD</span>
         </h1>
-        
+
         <p className={styles.heroDescription}>
-          익명으로 나누는 생생한 캠퍼스 이야기와 궁금증을 즉시 해결해주는 AI 대화방까지.<br className={styles.breakDesktop} />
-          대학생들을 위한 안전하고 스마트한 소통 공간에 오신 것을 환영합니다.
+          익명으로 나누는 생생한 캠퍼스 이야기와 유용한 대학 생활 정보를 공유하는 공간.
+          <br className={styles.breakDesktop} />
+          대학생들을 위한 안전하고 편리한 소통 공간에 오신 것을 환영합니다.
         </p>
 
         <div className={styles.ctaGroup}>
           <Link href="/community" className={styles.primaryCta}>
             커뮤니티 둘러보기
-          </Link>
-          <Link href="/chat" className={styles.secondaryCta}>
-            AI 대화방 바로가기
           </Link>
         </div>
       </section>
@@ -35,7 +34,9 @@ export default function HomePage() {
       <section className={styles.featuresSection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>UNIBOARD 주요 기능</h2>
-          <p className={styles.sectionSubtitle}>학생들의 더 나은 대학 생활을 위해 준비된 핵심 경험</p>
+          <p className={styles.sectionSubtitle}>
+            학생들의 더 나은 대학 생활을 위해 준비된 핵심 경험
+          </p>
         </div>
 
         <div className={styles.featureGrid}>
@@ -53,19 +54,6 @@ export default function HomePage() {
           </div>
 
           {/* Card 2 */}
-          <div className={styles.featureCard}>
-            <div className={`${styles.iconWrap} ${styles.iconSparkle}`}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"/>
-              </svg>
-            </div>
-            <h3 className={styles.cardTitle}>스마트 AI 대화방</h3>
-            <p className={styles.cardDesc}>
-              강의 팁, 과제 고민, 생활 정보 등 궁금한 점을 언제든지 실시간으로 묻고 답변받을 수 있는 스마트 AI 어시스턴트입니다.
-            </p>
-          </div>
-
-          {/* Card 3 */}
           <div className={styles.featureCard}>
             <div className={`${styles.iconWrap} ${styles.iconUsers}`}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -88,16 +76,19 @@ export default function HomePage() {
         <div className={styles.previewContainer}>
           <div className={styles.previewHeader}>
             <span className={styles.previewTag}>COMMUNITY PREVIEW</span>
-            <h3 className={styles.previewTitle}>다양한 카테고리의 게시판이 준비 중입니다</h3>
-            <p className={styles.previewDesc}>자유게시판, 비밀고민, 취업/진로, 중고장터 등 대학생에게 꼭 필요한 주제별 게시판</p>
+            <h3 className={styles.previewTitle}>
+              다양한 카테고리의 게시판이 준비 중입니다
+            </h3>
+            <p className={styles.previewDesc}>
+              자유게시판, 비밀고민, 취업/진로, 중고장터 등 대학생에게 꼭 필요한 주제별 게시판
+            </p>
           </div>
-          
+
           <div className={styles.tagGrid}>
             <span className={styles.topicBadge}>💬 자유 이야기</span>
             <span className={styles.topicBadge}>🔒 비밀 상담소</span>
             <span className={styles.topicBadge}>💼 취업 & 대외활동</span>
             <span className={styles.topicBadge}>📚 시험 족보 & 스터디</span>
-            <span className={styles.topicBadge}>🤖 AI 캠퍼스 튜터</span>
           </div>
         </div>
       </section>

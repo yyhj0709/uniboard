@@ -8,4 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/User'
+export type * from './models/Session'
+export type * from './models/Post'
+export type * from './models/Comment'
+export type * from './models/Like'
 export type * from './commonInputTypes'
